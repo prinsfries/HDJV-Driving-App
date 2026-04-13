@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "484818955540",
+    "project_id": "hdjv-transpo",
+    "storage_bucket": "hdjv-transpo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484818955540:android:78d606ace9fb6f6fb22601",
+        "android_client_info": {
+          "package_name": "com.anonymous.HDJVDrivingApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACKYFhnlYIFWuV_S7o8wjSzMS2YnSldkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

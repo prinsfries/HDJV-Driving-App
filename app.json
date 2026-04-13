@@ -1,0 +1,86 @@
+{
+  "expo": {
+    "name": "HDJV Transpo",
+    "slug": "hdjv-driver-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/HDJV_TRANSPO_ICON_1.png",
+    "scheme": "hdjvdrivingapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Allow HDJV Driving App to access your location while you are using the app.",
+        "NSCameraUsageDescription": "Allow HDJV Driving App to use the camera for proof photos.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.anonymous.HDJVDrivingApp"
+    },
+    "android": {
+      "versionCode": 1,
+      "googleServicesFile": "./google-services.json",
+      "softwareKeyboardLayoutMode": "resize",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/HDJV_TRANSPO_ICON_1.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.HDJVDrivingApp"
+    },
+    "web": {
+      "favicon": "./assets/images/HDJV_TRANSPO_ICON_1.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
+          }
+        }
+      ],
+      [
+        "@react-native-community/datetimepicker"
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#E6F4FE"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "566747d1-e420-43ac-b4ce-31fb12a5b717"
+      }
+    },
+    "owner": "hdjv-driver-app"
+  }
+}
