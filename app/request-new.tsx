@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Platform, Pressable, StyleSheet, Text, TextInput, View, Switch, ScrollView } from 'react-native';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { CornerTriangles } from '@/components/layout/corner-triangles';
 import { PassengersSection } from '@/components/add/PassengersSection';
+import { CornerTriangles } from '@/components/layout/corner-triangles';
 import { UI } from '@/constants/ui';
-import { createRequest, listRequests } from '@/utils/requestApi';
 import { getUser } from '@/utils/auth';
 import { formatDate, formatTime } from '@/utils/date';
+import { createRequest, listRequests } from '@/utils/requestApi';
+import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { router } from 'expo-router';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function RequestNewScreen() {
   const insets = useSafeAreaInsets();
@@ -47,7 +47,7 @@ export default function RequestNewScreen() {
           const dt = new Date(r.created_at);
           return dt >= start && dt <= end;
         }).length;
-        setCouponLeft(Math.max(3 - used, 0));
+        setCouponLeft(Math.max(4 - used, 0));
       } catch {
         if (active) setCouponLeft(null);
       }

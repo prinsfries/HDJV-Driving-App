@@ -1,8 +1,8 @@
-import { formatDate, formatDateRange, formatTime } from '@/utils/date';
 import { checkAccountStatus, getUser } from '@/utils/auth';
-import { listTrips, type Trip } from '@/utils/tripApi';
-import { listRequests, type RideRequest } from '@/utils/requestApi';
+import { formatDate, formatDateRange, formatTime } from '@/utils/date';
 import { listNotifications } from '@/utils/notificationApi';
+import { listRequests, type RideRequest } from '@/utils/requestApi';
+import { listTrips, type Trip } from '@/utils/tripApi';
 
 export type DatePreferences = {
   date_format: 'long' | 'short';
@@ -223,10 +223,14 @@ export const fetchHomePage = async (page: number = 1): Promise<HomePagePayload> 
       const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
       const usedCoupons = requestItems.filter((item) => {
         if (!item.used_coupon || !item.created_at) return false;
+
+        // NEW: Do not count coupons from  rejected rides
+        if (item.status === 'rejected') return false;
+
         const createdAt = new Date(item.created_at);
         return createdAt >= start && createdAt <= end;
       }).length;
-      couponLeft = Math.max(3 - usedCoupons, 0);
+      couponLeft = Math.max(4 - usedCoupons, 0);
     }
 
     return {

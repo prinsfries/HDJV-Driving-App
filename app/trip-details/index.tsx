@@ -1,8 +1,3 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { getCurrentLocationLabel } from '@/utils/location';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { OdometerSection } from '@/components/add/OdometerSection';
 import { PassengersSection } from '@/components/add/PassengersSection';
 import { PlateNumberSection } from '@/components/add/PlateNumberSection';
@@ -10,22 +5,26 @@ import { ProofPhotosSection, type ProofPhoto } from '@/components/add/ProofPhoto
 import { TripSummaryCard } from '@/components/add/TripSummaryCard';
 import { VehicleTypeSection } from '@/components/add/VehicleTypeSection';
 import { CornerTriangles } from '@/components/layout/corner-triangles';
-import { PlateNumberModal } from '@/components/modals/PlateNumberModal';
 import { ConfirmationModal } from '@/components/modals/ConfirmationModal';
+import { PlateNumberModal } from '@/components/modals/PlateNumberModal';
 import { UI } from '@/constants/ui';
-import { syncTrip, type TripSyncPayload, getTripProofPhotos, fetchVehiclesPage, getTrip, resolveFileUrl } from '@/utils/tripApi';
-import { getRequest, updateRequestStatus } from '@/utils/requestApi';
 import { getUser } from '@/utils/auth';
-import { formatDate, formatTime, formatDateRange } from '@/utils/date';
+import { formatDate, formatDateRange, formatTime } from '@/utils/date';
+import { getCurrentLocationLabel } from '@/utils/location';
+import { getRequest, updateRequestStatus } from '@/utils/requestApi';
+import { fetchVehiclesPage, getTrip, getTripProofPhotos, resolveFileUrl, syncTrip, type TripSyncPayload } from '@/utils/tripApi';
+import { Ionicons } from '@expo/vector-icons';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TripDetailsScreen() {
   const insets = useSafeAreaInsets();
