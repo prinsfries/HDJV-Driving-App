@@ -112,7 +112,8 @@ export const logout = async () => {
 export const handleApiError = async (response: Response) => {
   let data: any = {};
   try {
-    data = await response.json();
+    // Parse from a clone so callers can still read the original response body.
+    data = await response.clone().json();
   } catch {
     
   }

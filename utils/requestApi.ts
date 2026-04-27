@@ -143,10 +143,24 @@ export const createRequest = async (payload: {
     const apiError = await handleApiError(response);
     if (apiError) throw new Error(apiError);
     const errorData = await response.json().catch(() => ({}));
-    const firstFieldError = errorData?.errors
-      ? Object.values(errorData.errors).flat?.()[0]
+    const firstFieldErrorRaw = errorData?.errors
+      ? Object.values(errorData.errors).flatMap((value: any) =>
+          Array.isArray(value) ? value : [value],
+        )[0]
       : null;
-    throw new Error(firstFieldError || errorData.message || 'Failed to create request');
+    const firstFieldError =
+      typeof firstFieldErrorRaw === 'string'
+        ? firstFieldErrorRaw
+        : null;
+    const apiMessage =
+      typeof errorData?.message === 'string'
+        ? errorData.message
+        : null;
+    throw new Error(
+      firstFieldError ||
+        apiMessage ||
+        `Failed to create request (HTTP ${response.status})`,
+    );
   }
   return await response.json();
 };
