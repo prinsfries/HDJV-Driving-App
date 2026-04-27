@@ -3,7 +3,7 @@ import { CornerTriangles } from '@/components/layout/corner-triangles';
 import { UI } from '@/constants/ui';
 import { getUser } from '@/utils/auth';
 import { formatDate, formatTime } from '@/utils/date';
-import { createRequest, listRequests } from '@/utils/requestApi';
+import { createRequest, getMonthlyCouponLeft } from '@/utils/requestApi';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { router } from 'expo-router';
@@ -37,17 +37,10 @@ export default function RequestNewScreen() {
     };
     const loadCoupons = async () => {
       try {
-        const items = await listRequests();
         if (!active) return;
-        const now = new Date();
-        const start = new Date(now.getFullYear(), now.getMonth(), 1);
-        const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
-        const used = items.filter((r) => {
-          if (!r.used_coupon || !r.created_at) return false;
-          const dt = new Date(r.created_at);
-          return dt >= start && dt <= end;
-        }).length;
-        setCouponLeft(Math.max(4 - used, 0));
+        const left = await getMonthlyCouponLeft();
+        if (!active) return;
+        setCouponLeft(left);
       } catch {
         if (active) setCouponLeft(null);
       }

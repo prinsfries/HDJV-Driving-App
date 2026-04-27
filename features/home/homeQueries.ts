@@ -1,7 +1,7 @@
 import { checkAccountStatus, getUser } from '@/utils/auth';
 import { formatDate, formatDateRange, formatTime } from '@/utils/date';
 import { listNotifications } from '@/utils/notificationApi';
-import { listRequests, type RideRequest } from '@/utils/requestApi';
+import { getMonthlyCouponLeft, listRequests, type RideRequest } from '@/utils/requestApi';
 import { listTrips, type Trip } from '@/utils/tripApi';
 
 export type DatePreferences = {
@@ -218,19 +218,7 @@ export const fetchHomePage = async (page: number = 1): Promise<HomePagePayload> 
 
     let couponLeft: number | null = null;
     if (isKrPassenger) {
-      const now = new Date();
-      const start = new Date(now.getFullYear(), now.getMonth(), 1);
-      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
-      const usedCoupons = requestItems.filter((item) => {
-        if (!item.used_coupon || !item.created_at) return false;
-
-        // NEW: Do not count coupons from  rejected rides
-        if (item.status === 'rejected') return false;
-
-        const createdAt = new Date(item.created_at);
-        return createdAt >= start && createdAt <= end;
-      }).length;
-      couponLeft = Math.max(4 - usedCoupons, 0);
+      couponLeft = await getMonthlyCouponLeft().catch(() => null);
     }
 
     return {

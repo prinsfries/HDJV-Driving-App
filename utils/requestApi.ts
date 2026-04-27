@@ -74,6 +74,36 @@ export const listRequests = async (page: number = 1, limit: number = 10): Promis
   return [];
 };
 
+const KR_PASSENGER_MONTHLY_COUPON_LIMIT = 4;
+
+export const getMonthlyCouponLeft = async (asOf: Date = new Date()): Promise<number> => {
+  const start = new Date(asOf.getFullYear(), asOf.getMonth(), 1);
+  const end = new Date(asOf.getFullYear(), asOf.getMonth() + 1, 0, 23, 59, 59, 999);
+
+  let usedCoupons = 0;
+  let page = 1;
+  const limit = 100;
+  const maxPages = 20;
+
+  while (page <= maxPages) {
+    const items = await listRequests(page, limit);
+    if (items.length === 0) break;
+
+    usedCoupons += items.filter((item) => {
+      if (!item.used_coupon || !item.created_at) return false;
+      if (item.status === 'rejected') return false;
+
+      const createdAt = new Date(item.created_at);
+      return createdAt >= start && createdAt <= end;
+    }).length;
+
+    if (items.length < limit) break;
+    page += 1;
+  }
+
+  return Math.max(KR_PASSENGER_MONTHLY_COUPON_LIMIT - usedCoupons, 0);
+};
+
 export const getRequest = async (id: number): Promise<RideRequest> => {
   const token = await getToken();
   const response = await fetch(`${API_BASE_URL}/api/requests/${id}`, {
