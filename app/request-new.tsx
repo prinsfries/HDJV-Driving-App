@@ -114,7 +114,18 @@ export default function RequestNewScreen() {
       });
       router.back();
     } catch (e: any) {
-      setError(e?.message || 'Failed to submit request');
+      const msg = e?.message || 'Failed to submit request';
+      // If backend reports coupon limit reached, refresh local coupon count
+      if (String(msg).toLowerCase().includes('monthly coupon limit')) {
+        try {
+          const left = await getMonthlyCouponLeft();
+          setCouponLeft(left);
+          if ((left ?? 0) <= 0) setUseCoupon(false);
+        } catch {
+          // ignore refresh errors
+        }
+      }
+      setError(msg);
     } finally {
       setLoading(false);
     }
