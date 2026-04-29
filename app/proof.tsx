@@ -68,12 +68,34 @@ export default function ProofCaptureScreen() {
 
   const formatTimestamp = (value: Date) =>
     value.toLocaleString('en-US', {
+      timeZone: 'Asia/Manila',
       month: 'short',
       day: 'numeric',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
     });
+
+  const formatManilaCapturedAt = (value: Date) => {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Manila',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    }).formatToParts(value);
+
+    const lookup = Object.fromEntries(
+      parts
+        .filter((part) => part.type !== 'literal')
+        .map((part) => [part.type, part.value])
+    );
+
+    return `${lookup.year}-${lookup.month}-${lookup.day}T${lookup.hour}:${lookup.minute}:${lookup.second}+08:00`;
+  };
 
   const handleCapture = async () => {
     if (!cameraRef.current || isCapturing) {
@@ -95,7 +117,7 @@ export default function ProofCaptureScreen() {
       const now = new Date();
       setPhotoUri(captured.uri);
       setTimestampLabel(formatTimestamp(now));
-      setCapturedAt(now.toISOString());
+      setCapturedAt(formatManilaCapturedAt(now));
       setLocationLabel(locationStamp);
     } catch {
       setError('Unable to capture photo.');
@@ -150,7 +172,7 @@ export default function ProofCaptureScreen() {
         tripId,
         photoUri: destination,
         location: locationLabel,
-        capturedAt: capturedAt ?? new Date().toISOString(),
+        capturedAt: capturedAt ?? formatManilaCapturedAt(new Date()),
       }).then(() => {
         router.back();
       }).catch(() => {

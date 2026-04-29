@@ -64,6 +64,10 @@ export default function HomeScreen() {
   const isPassenger = role === 'passenger' || role === 'krpassenger';
   const isKrPassenger = role === 'krpassenger';
 
+  const sortRequestsLatestFirst = useCallback((items: RequestCard[]) => {
+    return [...items].sort((left, right) => right.sortTime - left.sortTime);
+  }, []);
+
   const loadHome = useCallback(
     async (page: number = 1, append: boolean = false) => {
       if (!append) {
@@ -88,10 +92,10 @@ export default function HomeScreen() {
             setRequests((prev) => {
               const existingIds = new Set(prev.map((r) => r.id));
               const newItems = payload.requests.filter((item) => !existingIds.has(item.id));
-              return [...prev, ...newItems];
+              return sortRequestsLatestFirst([...prev, ...newItems]);
             });
           } else {
-            setRequests(payload.requests);
+            setRequests(sortRequestsLatestFirst(payload.requests));
           }
           setTrips([]);
           setDriverRequests([]);
